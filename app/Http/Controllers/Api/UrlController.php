@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Url;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\Types\Collection;
 
 class UrlController extends Controller
 {
     /**
      * Returns the shortened URL.
-     *
      * @param Request $request
      * @return Response
      */
@@ -31,6 +31,45 @@ class UrlController extends Controller
         }
 
         return response('Error: something unexpected happened, please try again', 503);
+    }
+
+
+    /**
+     * It returns the top 100 visited URLs
+     * @return Response
+     */
+    public function showTop(): Response
+    {
+        $top = Url::orderByDesc('number_of_visits')
+            ->limit(100)
+            ->get();
+
+        return response($top, 200);
+    }
+
+
+    /**
+     * Shows the real URL
+     * @param Request $request
+     * @return Response
+     */
+    public function showReal(Request $request): Response
+    {
+        $request->validate([
+            'url' => 'required|string|url'
+        ]);
+
+        $short = $request->url;
+
+        $real = Url::select('real_url')
+            ->where('short_url', '=', $short)
+            ->first();
+
+        if ($real) {
+            return response($real, 200);
+        }
+
+        return response('Error: Url not found', 404);
     }
 
 

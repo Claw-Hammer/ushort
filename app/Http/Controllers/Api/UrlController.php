@@ -25,7 +25,7 @@ class UrlController extends Controller
 
             if ($short != 'Error') {
                 return response([
-                    'short_url' => env('APP_URL') . "/s/" . $short
+                    'short_url' => env('APP_URL') . "/" . $short
                 ], 200);
             }
         }
@@ -87,7 +87,7 @@ class UrlController extends Controller
     {
         if (Url::create([
             'real_url' => $url,
-            'short_url' => env('APP_URL') . "/s/" . $shortURL,
+            'short_url' => env('APP_URL') . "/" . $shortURL,
             'number_of_visits' => 0,
             'nsfw' => 0
         ])) {

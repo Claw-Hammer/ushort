@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Url;
-use http\Client\Response;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 
 class UrlController extends Controller
@@ -12,10 +12,10 @@ class UrlController extends Controller
     /**
      * Returns the shortened URL.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
-    public function index(Request $request): \Illuminate\Http\Response
+    public function index(Request $request): Response
     {
         $request->validate([
             'url' => 'required|string|url'

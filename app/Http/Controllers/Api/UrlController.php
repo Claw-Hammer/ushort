@@ -49,6 +49,31 @@ class UrlController extends Controller
 
 
     /**
+     * Shows the real URL
+     * @param Request $request
+     * @return Response
+     */
+    public function showReal(Request $request): Response
+    {
+        $request->validate([
+            'url' => 'required|string|url'
+        ]);
+
+        $short = $request->url;
+
+        $real = Url::select('real_url')
+            ->where('short_url', '=', $short)
+            ->first();
+
+        if ($real) {
+            return response($real, 200);
+        }
+
+        return response('Error: Url not found', 404);
+    }
+
+
+    /**
      * Generates the shortened URL
      * @param string  $url
      * @param int $lenght

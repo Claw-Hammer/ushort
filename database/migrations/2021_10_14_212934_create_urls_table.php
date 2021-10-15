@@ -17,8 +17,8 @@ class CreateUrlsTable extends Migration
             $table->id();
             $table->string('real_url');
             $table->string('short_url');
-            $table->smallInteger('numbre_of_visits')->default(0);
-            $table->boolean('nsfw')->default(false);
+            $table->smallInteger('number_of_visits')->default(0);
+            $table->boolean('nsfw')->default(0);
             $table->timestamps();
         });
     }

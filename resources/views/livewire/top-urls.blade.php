@@ -37,7 +37,11 @@
                                         <div class="text-sm text-gray-900">{{ $data->real_url }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
-                                        <div class="text-sm text-gray-900">{{ $data->short_url }}</div>
+                                        <div class="text-sm text-gray-900 hover:text-indigo-600 hover:font-bold">
+                                            <a href="{{ $data->short_url }}" target="_blank">
+                                                {{ $data->short_url }}
+                                            </a>
+                                        </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
                                         <div class="text-sm text-gray-900">{{ $data->number_of_visits }}</div>

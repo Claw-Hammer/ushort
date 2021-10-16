@@ -7,8 +7,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/{url}', [RedirectionController::class, 'show'])->name('url');
+Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::view('/top-urls', 'top-url')->name('top-urls');
+});
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::get('/{url}', [RedirectionController::class, 'show'])->name('url');

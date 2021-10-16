@@ -8,3 +8,7 @@ Route::get('/', function () {
 });
 
 Route::get('/{url}', [RedirectionController::class, 'show'])->name('url');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');

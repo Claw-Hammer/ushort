@@ -35,6 +35,14 @@ After that you need to create the database tables and populate them with data by
   php artisan migrate --seed
 ```
 
+After that, a default user is created with the  following credentials:
+
+```bash
+  User:  admin
+  Email: admin@admin.com
+  Pswrd: password
+```
+
 ## API End-Points
 
 

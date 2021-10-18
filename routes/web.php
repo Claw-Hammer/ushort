@@ -3,8 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RedirectionController;
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::get('/', function() {
+
+    if (Auth::user()) {
+        return redirect('/top-urls');
+
+    } else {
+        return view('welcome');
+    }
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {

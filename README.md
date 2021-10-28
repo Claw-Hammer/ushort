@@ -101,7 +101,7 @@ In this project I show how to work with:
  - Livewire components
  - Livewire modals
 
-## Improvements
+## Required and pending Improvements
 
  - To have separate and related tables since the same real URL could have several short URLs associated with it. This would also help in scalability of the application and in integration with other systems.
  - Create a token-based authentication for the API; this way, requests to the API could be limited in a free subscription model and have another paid subscription model with unlimited requests.

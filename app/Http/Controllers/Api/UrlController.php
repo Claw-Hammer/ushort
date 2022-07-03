@@ -9,6 +9,21 @@ use Illuminate\Http\Request;
 
 class UrlController extends Controller
 {
+    private $host;
+
+    public function __construct()
+    {
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+            $protocol = "https://";
+
+        } else {
+            $protocol = "http://";
+        }
+
+        $this->host = $protocol . $_SERVER['HTTP_HOST'];
+    }
+
+
     /**
      * Returns the shortened URL.
      * @param Request $request
@@ -25,7 +40,7 @@ class UrlController extends Controller
             if ($short != 'Error') {
 
                 return response([
-                    'short_url' => env('APP_URL') . "/" . $short
+                    'short_url' => $this->host . "/" . $short
                 ], 200);
             }
         }
@@ -125,7 +140,7 @@ class UrlController extends Controller
     {
         if (Url::create([
             'real_url' => $url,
-            'short_url' => env('APP_URL') . "/" . $shortURL,
+            'short_url' => $this->host . "/" . $shortURL,
             'number_of_visits' => 0,
             'nsfw' => 0
         ])) {

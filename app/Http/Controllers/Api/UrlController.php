@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Url;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use phpDocumentor\Reflection\Types\Collection;
 
 class UrlController extends Controller
 {
@@ -24,7 +23,7 @@ class UrlController extends Controller
         if ($short = $this->transform($request->url)) {
 
             if ($short != 'Error') {
-                
+
                 return response([
                     'short_url' => env('APP_URL') . "/" . $short
                 ], 200);

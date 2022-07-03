@@ -37,8 +37,7 @@ class UrlController extends Controller
             if ($short != 'Error') {
 
                 return response([
-                    'data' =>
-                    [
+                    'data' => [
                         'short_url' => $this->host . "/" . $short
                     ]
                 ], 201);
@@ -59,7 +58,11 @@ class UrlController extends Controller
             ->limit(100)
             ->get();
 
-        return response($top, 200);
+        return response([
+            'data' => [
+                $top
+            ]
+        ], 200);
     }
 
 

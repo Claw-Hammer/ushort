@@ -24,6 +24,7 @@ class UrlController extends Controller
         if ($short = $this->transform($request->url)) {
 
             if ($short != 'Error') {
+                
                 return response([
                     'short_url' => env('APP_URL') . "/" . $short
                 ], 200);
@@ -85,18 +86,17 @@ class UrlController extends Controller
         $shortURL = '';
 
         for ($i = 0; $i < $lenght; $i++) {
-
             $index = rand(0, strlen($characters) - 1);
             $shortURL .= $characters[$index];
         }
 
         if ($this->checkURL($shortURL) != 0) {
-
             $lenght += 1;
             $this->transform($url, $lenght);
         }
 
         if (!$this->storeURL($url, $shortURL)) {
+
             return 'Error';
         }
 
@@ -130,8 +130,10 @@ class UrlController extends Controller
             'number_of_visits' => 0,
             'nsfw' => 0
         ])) {
+
             return true;
         }
+
         return false;
     }
 }

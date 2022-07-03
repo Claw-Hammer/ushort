@@ -15,7 +15,9 @@ class RedirectionController extends Controller
      */
     public function show(string $url)
     {
-        $link = Url::where('short_url', 'like', '%' . $url . '%')->first();
+        $link = Url::where('short_url', 'like', '%' . $url . '%')
+            ->first();
+
         $link->number_of_visits += 1;
         $link->save();
 

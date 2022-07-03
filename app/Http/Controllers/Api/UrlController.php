@@ -13,12 +13,9 @@ class UrlController extends Controller
 
     public function __construct()
     {
-        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
-            $protocol = "https://";
-
-        } else {
-            $protocol = "http://";
-        }
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'
+        ? "https://"
+        : "http://";
 
         $this->host = $protocol . $_SERVER['HTTP_HOST'];
     }

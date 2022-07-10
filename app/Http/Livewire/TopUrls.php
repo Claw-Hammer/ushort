@@ -24,7 +24,7 @@ class TopUrls extends Component
         $response = Http::get('http://ushort.test/api/v1/url/top');
         $myJsonResponse = json_decode($response->body());
 
-        return view('livewire.top-urls')->with('urlData', $myJsonResponse->data[0]);
+        return view('livewire.top-urls')->with('urlData', $myJsonResponse->data);
     }
 
     public function save()

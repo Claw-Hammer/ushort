@@ -59,9 +59,7 @@ class UrlController extends Controller
             ->get();
 
         return response([
-            'data' => [
-                $top
-            ]
+            'data' => $top
         ], 200);
     }
 
@@ -84,7 +82,9 @@ class UrlController extends Controller
             ->first();
 
         if ($real) {
-            return response($real, 200);
+            return response([
+                'data' => $real
+            ], 200);
         }
 
         return response('Error: Url not found', 404);

@@ -46,7 +46,7 @@ A default user is created with the  following credentials:
 
 ### /api/v1/url/shortener
 
-This will generate a short url that points to the provided real url, you need to send a POST request with a json body as follows:
+This will create a short url that points to the provided real url, you need to send a POST request with a json body as follows:
 
 ```bash
   {
@@ -68,21 +68,22 @@ if succeed, the request will respond with a json body as follows:
 
 ### /api/v1/url/top
 
-This will generate a Json array with the top 100 most visited Urls, you need to send a GET request
+This will return a Json array with the top 100 most visited Urls, you need to send a GET request
 
 
 
 ### /api/v1/url/real
 
-This will respond with the real Url that the provided short url points to, you need to send a GET request with a json body as follows:
+This will return the real Url that the provided short url points to, you need to send a GET request with
+your short url as a parameter on the url api call as follows:
 
 ```bash
-  {
-    "url" : "your-short-url-here"
-  }
+
+  {your-domain}/api/v1/url/real?url={your-short-url}
+
 ```
 
-if succeed, the request will respond with a json body as follows:
+if succeed, the request will return a json body as follows:
 
 ```bash
   {

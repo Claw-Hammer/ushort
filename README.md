@@ -27,28 +27,26 @@ You need to create your .env file; inside the project folder run the following c
 
 then setup your db schema and db credentials into the .env file and create the database using your favorite method (phpMyAdmin, MySQL Workbench, etc).
 
-NOTE: It is very important to put inside your .env file, in the APP_URL key, the url that you are using to execute this project. For example, if you use the web server that comes with Laravel, when running 'php artisan serve', that url will usually be 'http://127.0.0.1:8000'; however, if you use a web server like Xampp or Laragon and create a virtual host, you must put the url of the virtual host that you created.
-
 After that you need to create the database tables and populate them with data by running:
 
 ```bash
   php artisan migrate --seed
 ```
 
-After that, a default user is created with the  following credentials:
+A default user is created with the  following credentials:
 
 ```bash
   User:  admin
   Email: admin@admin.com
-  Pswrd: password
+  Pasword: password
 ```
 
 ## API End-Points
 
 
-### http://{your-url}/api/v1/url/shortener
+### /api/v1/url/shortener
 
-This will generate a short url that points to the provided real url, you need to send a GET request with a json body as follows:
+This will create a short url that points to the provided real url, you need to send a POST request with a json body as follows:
 
 ```bash
   {
@@ -59,30 +57,33 @@ This will generate a short url that points to the provided real url, you need to
 if succeed, the request will respond with a json body as follows:
 
 ```bash
-  {
-    "short_url" : "generated-short-url-here"
-  }
+{
+    "data": {
+        "short_url": "generated-short-url-here"
+    }
+}
 ```
 
 
 
-### http://{your-url}/api/v1/url/top
+### /api/v1/url/top
 
-This will generate a Json array with the top 100 most visited Urls, you need to send a GET request without a body
+This will return a Json array with the top 100 most visited Urls, you need to send a GET request
 
 
 
-### http://{your-url}/api/v1/url/real
+### /api/v1/url/real
 
-This will respond with the real Url that the provided short url points to, you need to send a GET request with a json body as follows:
+This will return the real Url that the provided short url points to, you need to send a GET request with
+your short url as a parameter on the url api call as follows:
 
 ```bash
-  {
-    "url" : "your-short-url-here"
-  }
+
+  {your-domain}/api/v1/url/real?url={your-short-url}
+
 ```
 
-if succeed, the request will respond with a json body as follows:
+if succeed, the request will return a json body as follows:
 
 ```bash
   {

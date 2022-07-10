@@ -6,10 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Models\Url;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use phpDocumentor\Reflection\Types\Collection;
 
 class UrlController extends Controller
 {
+    private $host;
+
+    public function __construct()
+    {
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'
+        ? "https://"
+        : "http://";
+
+        $this->host = $protocol . $_SERVER['HTTP_HOST'];
+    }
+
+
     /**
      * Returns the shortened URL.
      * @param Request $request
@@ -24,9 +35,12 @@ class UrlController extends Controller
         if ($short = $this->transform($request->url)) {
 
             if ($short != 'Error') {
+
                 return response([
-                    'short_url' => env('APP_URL') . "/" . $short
-                ], 200);
+                    'data' => [
+                        'short_url' => $this->host . "/" . $short
+                    ]
+                ], 201);
             }
         }
 
@@ -44,7 +58,9 @@ class UrlController extends Controller
             ->limit(100)
             ->get();
 
-        return response($top, 200);
+        return response([
+            'data' => $top
+        ], 200);
     }
 
 
@@ -66,7 +82,9 @@ class UrlController extends Controller
             ->first();
 
         if ($real) {
-            return response($real, 200);
+            return response([
+                'data' => $real
+            ], 200);
         }
 
         return response('Error: Url not found', 404);
@@ -85,18 +103,17 @@ class UrlController extends Controller
         $shortURL = '';
 
         for ($i = 0; $i < $lenght; $i++) {
-
             $index = rand(0, strlen($characters) - 1);
             $shortURL .= $characters[$index];
         }
 
         if ($this->checkURL($shortURL) != 0) {
-
             $lenght += 1;
             $this->transform($url, $lenght);
         }
 
         if (!$this->storeURL($url, $shortURL)) {
+
             return 'Error';
         }
 
@@ -126,12 +143,14 @@ class UrlController extends Controller
     {
         if (Url::create([
             'real_url' => $url,
-            'short_url' => env('APP_URL') . "/" . $shortURL,
+            'short_url' => $this->host . "/" . $shortURL,
             'number_of_visits' => 0,
             'nsfw' => 0
         ])) {
+
             return true;
         }
+
         return false;
     }
 }

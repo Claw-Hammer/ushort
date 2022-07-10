@@ -18,10 +18,11 @@ class TopUrls extends Component
         'real_url' => 'required|string|url',
     ];
 
-
     public function render()
     {
-        $response = Http::get('http://ushort.test/api/v1/url/top');
+        $host = $this->getHost();
+
+        $response = Http::get("{$host}/api/v1/url/top");
         $myJsonResponse = json_decode($response->body());
 
         return view('livewire.top-urls')->with('urlData', $myJsonResponse->data);
@@ -29,18 +30,19 @@ class TopUrls extends Component
 
     public function save()
     {
+        $host = $this->getHost();
+
         $this->validate();
 
-        $response = Http::get('http://ushort.test/api/v1/url/shortener', [
+        $response = Http::post("{$host}/api/v1/url/shortener", [
             'url' => $this->real_url
         ]);
 
-        if ($response->status() !== 200) {
+        if ($response->status() !== 201) {
             $this->short_url = 'Error, please try again';
-
         } else {
             $myJsonResponse = json_decode($response->body());
-            $this->short_url = $myJsonResponse->short_url;
+            $this->short_url = $myJsonResponse->data->short_url;
         }
     }
 
@@ -51,5 +53,14 @@ class TopUrls extends Component
             'real_url',
             'short_url'
         ]);
+    }
+
+    private function getHost(): string
+    {
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'
+        ? "https://"
+        : "http://";
+
+        return $protocol . $_SERVER['HTTP_HOST'];
     }
 }

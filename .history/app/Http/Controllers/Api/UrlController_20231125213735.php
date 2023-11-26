@@ -34,11 +34,11 @@ class UrlController extends Controller
 
         if ($short = $this->transform($request->url)) {
 
-            if ($short !== 'Error') {
+            if ($short != 'Error') {
 
                 return response([
                     'data' => [
-                        'short_url' => "$this->host/$short"
+                        'short_url' => $this->host . "/" . $short
                     ]
                 ], 201);
             }
@@ -78,7 +78,7 @@ class UrlController extends Controller
         $short = $request->url;
 
         $real = Url::select('real_url')
-            ->where('short_url', $short)
+            ->where('short_url', '=', $short)
             ->first();
 
         if ($real) {
@@ -107,7 +107,7 @@ class UrlController extends Controller
             $shortURL .= $characters[$index];
         }
 
-        if ($this->checkIfExists($shortURL) !== 0) {
+        if ($this->checkIfExists($shortURL) != 0) {
             $lenght += 1;
             $this->transform($url, $lenght);
         }
@@ -143,7 +143,7 @@ class UrlController extends Controller
     {
         if (Url::create([
             'real_url' => $url,
-            'short_url' => "$this->host/$shortURL",
+            'short_url' => $this->host . "/" . $shortURL,
             'number_of_visits' => 0,
             'nsfw' => 0
         ])) {

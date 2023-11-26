@@ -34,11 +34,11 @@ class UrlController extends Controller
 
         if ($short = $this->transform($request->url)) {
 
-            if ($short !== 'Error') {
+            if ($short != 'Error') {
 
                 return response([
                     'data' => [
-                        'short_url' => "$this->host/$short"
+                        'short_url' => $this->host . "/" . $short
                     ]
                 ], 201);
             }
@@ -78,7 +78,7 @@ class UrlController extends Controller
         $short = $request->url;
 
         $real = Url::select('real_url')
-            ->where('short_url', $short)
+            ->where('short_url', '=', $short)
             ->first();
 
         if ($real) {
@@ -97,7 +97,7 @@ class UrlController extends Controller
      * @param int $lenght
      * @return string
      */
-    private function transform(string $url, int $lenght = 5): string
+    private function transform(string $url, int $lenght = 3): string
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $shortURL = '';
@@ -107,12 +107,12 @@ class UrlController extends Controller
             $shortURL .= $characters[$index];
         }
 
-        if ($this->checkIfExists($shortURL) !== 0) {
+        if ($this->checkURL($shortURL) != 0) {
             $lenght += 1;
             $this->transform($url, $lenght);
         }
 
-        if (!$this->store($url, $shortURL)) {
+        if (!$this->storeURL($url, $shortURL)) {
 
             return 'Error';
         }
@@ -126,7 +126,7 @@ class UrlController extends Controller
      * @param  string  $url
      * @return int
      */
-    private function checkIfExists(string $url): int
+    private function checkURL(string $url): int
     {
         return Url::where('short_url', $url)->count();
     }
@@ -139,11 +139,11 @@ class UrlController extends Controller
      * @param  string  $shortURL
      * @return bool
      */
-    private function store(string $url, string $shortURL): bool
+    private function storeURL(string $url, string $shortURL): bool
     {
         if (Url::create([
             'real_url' => $url,
-            'short_url' => "$this->host/$shortURL",
+            'short_url' => $this->host . "/" . $shortURL,
             'number_of_visits' => 0,
             'nsfw' => 0
         ])) {
